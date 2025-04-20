@@ -103,6 +103,12 @@ void powerEnterSleepMode(void)
   spiDeInit();
   delayMs(1);
 
+  gpioOutputEnable(NRF_GPIO_PIN_MAP(0, 4));
+  gpioOutputEnable(NRF_GPIO_PIN_MAP(0, 7));
+  gpioWrite(NRF_GPIO_PIN_MAP(0, 7), 1);
+  gpioWrite(NRF_GPIO_PIN_MAP(0, 4), 1);
+
+
   // Prepare wakeup buttons.
   err_code = bsp_btn_ble_sleep_mode_prepare();
   APP_ERROR_CHECK(err_code);
@@ -251,6 +257,8 @@ static void shioInit(void)
   bleAdvertisingStart();
 
   NRF_LOG_RAW_INFO("%08d [shio] booted\n", systemTimeGetMs());
+
+  powerEnterSleepMode();
 }
 
 static void processQueue(void)
